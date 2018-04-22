@@ -1,0 +1,10 @@
+language: go
+
+go:
+    - master
+
+script:
+    # Test Stringer
+    - pushd ./stringer-ci/
+    - go test -v
+    - popd
