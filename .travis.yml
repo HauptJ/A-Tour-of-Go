@@ -9,3 +9,7 @@ script:
     - pushd ./stringer-ci/
     - go test -v ./...
     - popd
+    # Test Tail
+    - pushd ./tail-ci/
+    - go test -v ./...
+    - popd
