@@ -13,7 +13,7 @@ install:
   - go version
   - go env
 
-test_script:
+script:
   - ps: pushd .\stringer-ci\
   - ps: go test -v ./...
   - ps: popd
