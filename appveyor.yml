@@ -1,0 +1,22 @@
+version: "{build}"
+
+os: Windows Server 2016
+
+clone_folder: c:\gopath\src\github.com\HauptJ\A-Tour-of-Go
+
+environment:
+  GOPATH: c:\gopath
+
+install:
+  - echo %PATH%
+  - echo %GOPATH%
+  - go version
+  - go env
+
+test_script:
+  - ps: pushd .\stringer-ci\
+  - ps: go test -v ./...
+  - ps: popd
+  - ps: pushd .\tail-ci\
+  - ps: go test -v ./...
+  - ps: popd
