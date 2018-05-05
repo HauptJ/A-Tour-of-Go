@@ -9,6 +9,7 @@ package main
 import (
   "fmt"
   "strings"
+  "sort"
 )
 
 /* Node structure */
@@ -228,7 +229,7 @@ func (tree *Tree) find_tree(root string) (string, bool) {
 /*
 Traverses the tree for a specified node
 */
-func (tree *Tree) traverse_tree(node *TNode, find func(*TNode)){
+func (tree *Tree) traverse_tree(node *TNode, find func(*TNode)) {
   if node == nil {
     return
   }
@@ -244,6 +245,24 @@ func (tree *Tree) dump_tree() {
   tree.ROOT.dump_node(0, "")
 }
 
+func print_sorted_map(m map[string]string) {
+  var keys[]string
+  for k := range m {
+    keys = append(keys, k)
+  }
+  sort.Strings(keys)
+  for _, k := range keys {
+    fmt.Println("Key:", k, "Value:", m[k])
+  }
+}
+
+func print_balanced_BST(v, d *[]string) {
+  for i := range *v {
+    // a little pointer fun
+    fmt.Println("Value:", (*v)[i], "Data", (*d)[i])
+  }
+}
+
 func main() {
   values := []string{"d", "b", "g", "g", "c", "e", "a", "h", "f", "i", "j", "l", "k"}
   data := []string{"delta", "bravo", "golang", "golf", "charlie", "echo", "alpha", "hotel", "foxtrot", "india", "juliett", "lima", "kilo"}
@@ -257,5 +276,17 @@ func main() {
   }
 
   fmt.Println("Sorted values: | ")
-  tree.traverse_tree(tree.ROOT, func(node *TNode) {fmt.Print(node.VALUE, ": ", node.DATA, " | ") })
+  var v, d []string
+
+  m := make(map[string]string)
+
+  // golang maps do not follow insertion order :(
+  tree.traverse_tree(tree.ROOT, func(node *TNode) {m[node.VALUE] = node.DATA})
+  // sorting the map kind of defeats the purpose of this exercise
+  fmt.Printf("%v\n", m)
+  print_sorted_map(m)
+
+  // arrays follow insertion order
+  tree.traverse_tree(tree.ROOT, func(node *TNode) {v, d = append(v, node.VALUE), append(d, node.DATA)})
+  print_balanced_BST(&v, &d)
 }
