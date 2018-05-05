@@ -271,7 +271,7 @@ func bst(values, data []string) ([]string, []string) {
 
   // arrays follow insertion order
   tree.traverse_tree(tree.ROOT, func(node *TNode) {v, d = append(v, node.VALUE), append(d, node.DATA)})
-  fmt.Printf("%v%v\n", v, d)
+  //fmt.Printf("%v%v\n", v, d)
   //print_balanced_BST(&v, &d)
 
   // m := make(map[string]string)
@@ -287,10 +287,11 @@ func bst(values, data []string) ([]string, []string) {
 }
 
 func main() {
-  values := []string{"d", "b", "g", "g", "c", "e", "a", "h", "f", "i", "j", "l", "k"}
-  data := []string{"delta", "bravo", "golang", "golf", "charlie", "echo", "alpha", "hotel", "foxtrot", "india", "juliett", "lima", "kilo"}
+  //values := []string{"d", "b", "g", "g", "c", "e", "a", "h", "f", "i", "j", "l", "k"}
+  //data := []string{"delta", "bravo", "golang", "golf", "charlie", "echo", "alpha", "hotel", "foxtrot", "india", "juliett", "lima", "kilo"}
 
-  v, d := bst(values, data)
-  print_balanced_BST(&v, &d)
+  //v, d := bst(values, data)
+  //print_balanced_BST(&v, &d)
+  tst()
 
 }

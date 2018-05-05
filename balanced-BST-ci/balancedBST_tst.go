@@ -21,7 +21,7 @@ var tests = []test_data{
   []string{"alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel", "india", "juliett", "kilo", "lima"} },
 }
 
-func main() {
+func tst() {
   for _, test := range tests {
     fmt.Printf("%v", test)
     v, d := bst(test.values_in, test.data_in)
