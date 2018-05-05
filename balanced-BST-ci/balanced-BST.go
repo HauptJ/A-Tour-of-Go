@@ -1,11 +1,8 @@
 /*
-1) Get the Middle of the array and make it root.
-2) Recursively do same for left half and right half.
-      a) Get the middle of left half and make it left child of the root
-          created in step 1.
-      b) Get the middle of right half and make it right child of the
-          root created in step 1.
+1) Set new node as root
+2) If the tree becomes unbalanced, rebalance it until balanced
 */
+//Source: https://appliedgo.net/balancedtree/
 
 package main
 
@@ -27,25 +24,6 @@ type TNode struct {
 type Tree struct {
   ROOT *TNode
 }
-
-/* Helper Functions */
-
-// returns the smaller int
-// func min_val(a, b int) int {
-//   if a < b {
-//     return a
-//   }
-//   return b
-// }
-//
-// // returns the larger int
-// func max_val(a, b int) int {
-//   if a > b {
-//     return a
-//   }
-//   return b
-// }
-
 
 /*
 Insert method
@@ -110,7 +88,7 @@ func (node *TNode) insert_node(value, data string) bool {
 /*
 Takes a child node and rotates the child node's subtree to the left
 */
-func (node *TNode) rotate_left(child *TNode) {
+func (node *TNode) rotate_node_left(child *TNode) {
   right_child := child.RIGHT // save the right child node
 
   child.RIGHT = right_child.LEFT // right_child's left subtree is assigned to child
@@ -128,7 +106,7 @@ func (node *TNode) rotate_left(child *TNode) {
   right_child.BAL = 0
 }
 
-func (node *TNode) rotate_right(child *TNode) {
+func (node *TNode) rotate_node_right(child *TNode) {
   fmt.Println("right rotation " + child.VALUE)
   left_child := child.LEFT
   child.LEFT = left_child.RIGHT
@@ -147,21 +125,21 @@ func (node *TNode) rotate_right(child *TNode) {
 /*
 Rotates the right child of the child node to the right, then rotates the child node to the left
 */
-func (node *TNode) rotate_right_left(child *TNode) {
+func (node *TNode) rotate_node_right_left(child *TNode) {
   child.RIGHT.LEFT.BAL = 1
-  child.rotate_right(child.RIGHT)
+  child.rotate_node_right(child.RIGHT)
   child.RIGHT.BAL = 1
-  node.rotate_left(child)
+  node.rotate_node_left(child)
 }
 
 /*
 Rotates the left child of the child node to the left, then rotates the child node to the right
 */
-func (node *TNode) rotate_left_right(child *TNode) {
+func (node *TNode) rotate_node_left_right(child *TNode) {
   child.LEFT.RIGHT.BAL = -1
-  child.rotate_left(child.LEFT)
+  child.rotate_node_left(child.LEFT)
   child.LEFT.BAL = -1
-  node.rotate_right(child)
+  node.rotate_node_right(child)
 }
 
 /*
@@ -169,16 +147,16 @@ Brings the subtree with root node child back to a balanced state
 */
 func (node *TNode) balance_tree_nodes(child *TNode) {
   fmt.Println("balance " + child.VALUE)
-  child.dump_subtree(0, "")
+  child.dump_node(0, "")
   switch {
   case child.BAL == -2 && child.LEFT.BAL == -1: // the left subtree is too high, and the left child node has a left child node
-    node.rotate_right(child)
+    node.rotate_node_right(child)
   case child.BAL == 2 && child.RIGHT.BAL == 1: // the right subtree is too high, and the right child node has a right child node
-    node.rotate_left(child)
+    node.rotate_node_left(child)
   case child.BAL == -2 && child.LEFT.BAL == 1: // the left subtree is too high, and the left child node has a right child node
-    node.rotate_left_right(child)
+    node.rotate_node_left_right(child)
   case child.BAL == 2 && child.RIGHT.BAL == -1: // The right subtree is too high, and the right child has a left child
-    node.rotate_right_left(child)
+    node.rotate_node_right_left(child)
   }
 }
 
@@ -204,7 +182,7 @@ func (node *TNode) find_node(data string) (string, bool) {
 /*
 Dumps the structure of the subtree starting at node node
 */
-func (node *TNode) dump_subtree(pos int, child string) {
+func (node *TNode) dump_node(pos int, child string) {
   if node == nil {
     return
   }
@@ -213,28 +191,29 @@ func (node *TNode) dump_subtree(pos int, child string) {
     indent = strings.Repeat(" ", (pos-1)*4) + "+" + child + "--"
   }
   fmt.Printf("%s%s[%d]\n", indent, node.VALUE, node.BAL)
-  node.LEFT.dump_subtree(pos + 1, "LEFT")
-  node.RIGHT.dump_subtree(pos + 1, "RIGHT")
+  node.LEFT.dump_node(pos + 1, "LEFT")
+  node.RIGHT.dump_node(pos + 1, "RIGHT")
 }
 
 /* Tree methods */
 
+/*
+Inserts a new node into the tree and sets it as the root of the tree
+*/
 func (tree *Tree) insert_tree(value, data string) {
   if tree.ROOT == nil {
     tree.ROOT = &TNode{VALUE: value, DATA: data}
     return
   }
-  //tree.ROOT.insert_tree(value, data)
   tree.ROOT.insert_node(value, data)
 
-  if tree.ROOT.BAL < -1 || tree.ROOT.BAL > 1 {
+  if tree.ROOT.BAL < -1 || tree.ROOT.BAL > 1 { // rebalance tree
     tree.balance_tree()
   }
 }
 
 func (tree *Tree) balance_tree() {
   tmp_parent := &TNode{LEFT: tree.ROOT, VALUE: "temp parent"}
-  //tmp_parent.balance_tree(tree.ROOT)
   tmp_parent.balance_tree_nodes(tree.ROOT)
   tree.ROOT = tmp_parent.LEFT // fetch the new root node from the temp parent node
 }
@@ -243,11 +222,13 @@ func (tree *Tree) find_tree(root string) (string, bool) {
   if tree.ROOT == nil {
     return "", false
   }
-  //return tree.ROOT.find_tree(root)
   return tree.ROOT.find_node(root)
 }
 
-func (tree *Tree) traverse_tree(node *TNode, find func(*TNode)) {
+/*
+Traverses the tree for a specified node
+*/
+func (tree *Tree) traverse_tree(node *TNode, find func(*TNode)){
   if node == nil {
     return
   }
@@ -260,8 +241,7 @@ func (tree *Tree) traverse_tree(node *TNode, find func(*TNode)) {
 Dumps the tree structure
 */
 func (tree *Tree) dump_tree() {
-  //tree.ROOT.dump_tree(0, "")
-  tree.ROOT.dump_subtree(0, "")
+  tree.ROOT.dump_node(0, "")
 }
 
 func main() {
