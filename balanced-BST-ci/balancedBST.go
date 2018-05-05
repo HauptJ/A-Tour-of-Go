@@ -1,9 +1,3 @@
-/*
-1) Set new node as root
-2) If the tree becomes unbalanced, rebalance it until balanced
-*/
-//Source: https://appliedgo.net/balancedtree/
-
 package main
 
 import (
@@ -263,10 +257,7 @@ func print_balanced_BST(v, d *[]string) {
   }
 }
 
-func main() {
-  values := []string{"d", "b", "g", "g", "c", "e", "a", "h", "f", "i", "j", "l", "k"}
-  data := []string{"delta", "bravo", "golang", "golf", "charlie", "echo", "alpha", "hotel", "foxtrot", "india", "juliett", "lima", "kilo"}
-
+func bst(values, data []string) ([]string, []string) {
   tree := &Tree{}
   for i := 0; i < len(values); i++ {
     fmt.Println("Insert " + values[i] + ": " + data[i])
@@ -278,15 +269,28 @@ func main() {
   fmt.Println("Sorted values: | ")
   var v, d []string
 
-  m := make(map[string]string)
-
-  // golang maps do not follow insertion order :(
-  tree.traverse_tree(tree.ROOT, func(node *TNode) {m[node.VALUE] = node.DATA})
-  // sorting the map kind of defeats the purpose of this exercise
-  fmt.Printf("%v\n", m)
-  print_sorted_map(m)
-
   // arrays follow insertion order
   tree.traverse_tree(tree.ROOT, func(node *TNode) {v, d = append(v, node.VALUE), append(d, node.DATA)})
+  fmt.Printf("%v%v\n", v, d)
+  //print_balanced_BST(&v, &d)
+
+  // m := make(map[string]string)
+  //
+  // // golang maps do not follow insertion order :(
+  // tree.traverse_tree(tree.ROOT, func(node *TNode) {m[node.VALUE] = node.DATA})
+  // // sorting the map kind of defeats the purpose of this exercise
+  // fmt.Printf("%v\n", m)
+  // print_sorted_map(m)
+
+  return v, d
+
+}
+
+func main() {
+  values := []string{"d", "b", "g", "g", "c", "e", "a", "h", "f", "i", "j", "l", "k"}
+  data := []string{"delta", "bravo", "golang", "golf", "charlie", "echo", "alpha", "hotel", "foxtrot", "india", "juliett", "lima", "kilo"}
+
+  v, d := bst(values, data)
   print_balanced_BST(&v, &d)
+
 }
