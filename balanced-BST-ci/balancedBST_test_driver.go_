@@ -1,10 +1,13 @@
+/*
+BST test driver utilizing exit()
+*/
+
 package main
 
 import (
-  //"strings"
   "fmt"
   "reflect"
-  "testing"
+  "os"
 )
 
 type test_data struct {
@@ -21,19 +24,21 @@ var tests = []test_data{
   []string{"alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel", "india", "juliett", "kilo", "lima"} },
 }
 
-func test_bst(t *testing.T) {
+func test_driver() {
   for _, test := range tests {
     fmt.Printf("%v", test)
     v, d := bst(test.values_in, test.data_in)
     print_balanced_BST(&v, &d)
     if (reflect.DeepEqual(v, test.values_out) != true && reflect.DeepEqual(d, test.data_out) != true) {
-      t.Error(
+      fmt.Printf(
       "For values: ", test.values_in, " data: ", test.data_in,
       " Expected", test.values_out, " data: ", test.data_out,
       " Got values: ", v, " data: ", d,
       )
+      os.Exit(1)
     } else {
       fmt.Println("PASS")
+      os.Exit(0)
     }
   }
 }

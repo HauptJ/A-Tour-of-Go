@@ -20,3 +20,6 @@ build_script:
   - ps: pushd .\tail-ci\
   - ps: go test -v ./...
   - ps: popd
+  - ps: pushd .\balanced-BST-ci\
+  - ps: go test -v ./...
+  - ps: popd

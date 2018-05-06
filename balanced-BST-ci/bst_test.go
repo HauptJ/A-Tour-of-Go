@@ -4,7 +4,7 @@ import (
   //"strings"
   "fmt"
   "reflect"
-  //"testing"
+  "testing"
 )
 
 type test_data struct {
@@ -21,13 +21,13 @@ var tests = []test_data{
   []string{"alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel", "india", "juliett", "kilo", "lima"} },
 }
 
-func tst() {
+func Test_bst(t *testing.T) { //NOTE: The T in Test must be capitalized :/
   for _, test := range tests {
     fmt.Printf("%v", test)
     v, d := bst(test.values_in, test.data_in)
     print_balanced_BST(&v, &d)
     if (reflect.DeepEqual(v, test.values_out) != true && reflect.DeepEqual(d, test.data_out) != true) {
-      fmt.Printf(
+      t.Error(
       "For values: ", test.values_in, " data: ", test.data_in,
       " Expected", test.values_out, " data: ", test.data_out,
       " Got values: ", v, " data: ", d,

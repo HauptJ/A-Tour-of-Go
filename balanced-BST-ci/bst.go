@@ -287,11 +287,11 @@ func bst(values, data []string) ([]string, []string) {
 }
 
 func main() {
-  //values := []string{"d", "b", "g", "g", "c", "e", "a", "h", "f", "i", "j", "l", "k"}
-  //data := []string{"delta", "bravo", "golang", "golf", "charlie", "echo", "alpha", "hotel", "foxtrot", "india", "juliett", "lima", "kilo"}
+  values := []string{"d", "b", "g", "g", "c", "e", "a", "h", "f", "i", "j", "l", "k"}
+  data := []string{"delta", "bravo", "golang", "golf", "charlie", "echo", "alpha", "hotel", "foxtrot", "india", "juliett", "lima", "kilo"}
 
-  //v, d := bst(values, data)
-  //print_balanced_BST(&v, &d)
-  tst()
+  v, d := bst(values, data)
+  print_balanced_BST(&v, &d)
+  //test_driver()
 
 }
