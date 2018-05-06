@@ -13,3 +13,6 @@ script:
     - pushd ./tail-ci/
     - go test -v ./...
     - popd
+    - pushd ./balanced-BST-ci/
+    - go test -v ./...
+    - popd
