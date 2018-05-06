@@ -15,4 +15,8 @@ script:
     - popd
     - pushd ./balanced-BST-ci/
     - go test -v ./...
+    # BST test using exit()
+    - mv ./bst_test_driver.go_ ./bst_test_driver.go
+    - sed -e "s///test_driver/test_driver/" -i bst.go
+    - go run .\bst.go .\bst_test_driver.go
     - popd

@@ -22,6 +22,7 @@ build_script:
   - ps: popd
   - ps: pushd .\balanced-BST-ci\
   - ps: go test -v ./...
+  # BST test using exit()
   - ps: mv .\bst_test_driver.go_ .\bst_test_driver.go
   - ps: get-content .\bst.go | %{$_ -replace "//test_driver","test_driver"} | Set-Content bst_t.go
   - ps: go run .\bst_t.go .\bst_test_driver.go
