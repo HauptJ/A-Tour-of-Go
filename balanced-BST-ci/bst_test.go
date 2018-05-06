@@ -26,7 +26,7 @@ func Test_bst(t *testing.T) { //NOTE: The T in Test must be capitalized :/
     fmt.Printf("%v", test)
     v, d := bst(test.values_in, test.data_in)
     print_balanced_BST(&v, &d)
-    if (reflect.DeepEqual(v, test.values_out) != true && reflect.DeepEqual(d, test.data_out) != true) {
+    if (reflect.DeepEqual(v, test.values_out) != true || reflect.DeepEqual(d, test.data_out) != true) {
       t.Error(
       "For values: ", test.values_in, " data: ", test.data_in,
       " Expected", test.values_out, " data: ", test.data_out,
